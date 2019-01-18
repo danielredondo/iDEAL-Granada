@@ -12,7 +12,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                h3("Página web de la noticia:"),
                                textInput(inputId = "url", 
                                            label = NULL,
-                                           value = "http://www.ideal.es/granada/albanil-logro-hacerse-20180409225308-ntvo.html"
+                                           value = "https://www.ideal.es/culturas/informe-depende-nueva-20190118202616-nt.html"
                                            )
                                ),
                     mainPanel(uiOutput("noticia"))
@@ -29,13 +29,13 @@ server <- function(input, output) {
       cuerpo <- reactive({
             cuerpo_original <- input$url %>% read_html() %>% html_nodes('p') %>% html_text()
             # Ordenamos el cuerpo
-            cuerpo_recortado <- cuerpo_original[35:(length(cuerpo_original) - 1)]
+            cuerpo_recortado <- cuerpo_original[31:(length(cuerpo_original) - 1)]
             body <- cuerpo_recortado[1]
             for (i in 2:length(cuerpo_recortado)){
               gsub("  ", "", cuerpo_recortado[i])
               if(cuerpo_recortado[i]!="") body <- rbind(body, cuerpo_recortado[i])
             }
-        return(body)
+       return(body)
       })
       
       imprimir_noticia <- reactive({
