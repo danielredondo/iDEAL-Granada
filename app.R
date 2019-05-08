@@ -6,10 +6,11 @@ library(shinythemes)
 
 ui <- fluidPage(theme = shinytheme("flatly"),
                 titlePanel(tags$h2(tags$b("iDEAL")), windowTitle = "iDEAL"),
-                tags$h4("Web de ", tags$a("Daniel Redondo", href = "http://www.danielredondo.com")),
+                tags$h4("Web de ", tags$a("Daniel Redondo.", href = "http://www.danielredondo.com"),
+                        "Enlace corto a esta web:", tags$a("bitly.com/iDEALgranada", href = "http://bitly.com/iDEALgranada")),
                 sidebarLayout(
                     sidebarPanel(width = 4,
-                               h3("Pagina web de la noticia:"),
+                               h3("Página web de la noticia:"),
                                textInput(inputId = "url", 
                                            label = NULL,
                                            value = "https://www.ideal.es/culturas/informe-depende-nueva-20190118202616-nt.html"
@@ -23,13 +24,13 @@ server <- function(input, output) {
 
       # Web scraping
       titulo <- reactive(input$url %>% read_html() %>% html_nodes('h1') %>% html_text() %>% as.data.frame() %>% pull(1) %>% levels())
-      subtitulo_y_categoria <- reactive(input$url %>% read_html() %>% html_nodes('h2') %>% html_text() %>% as.data.frame() %>% pull(1) %>% levels())
-      subtitulo <- reactive(subtitulo_y_categoria()[6])
-      categoria <- reactive(subtitulo_y_categoria()[5])
+      subtitulo_y_categoria <- reactive(input$url %>% read_html() %>% html_nodes('h2') %>% html_text())
+      subtitulo <- reactive(subtitulo_y_categoria()[2])
+      categoria <- reactive(subtitulo_y_categoria()[1])
       cuerpo <- reactive({
             cuerpo_original <- input$url %>% read_html() %>% html_nodes('p') %>% html_text()
             # Ordenamos el cuerpo
-            cuerpo_recortado <- cuerpo_original[34:(length(cuerpo_original) - 1)]
+            cuerpo_recortado <- cuerpo_original[13:(length(cuerpo_original) - 1)]
             body <- cuerpo_recortado[1]
             for (i in 2:length(cuerpo_recortado)){
               gsub("  ", "", cuerpo_recortado[i])
