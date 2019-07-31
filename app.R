@@ -30,7 +30,7 @@ server <- function(input, output) {
       cuerpo <- reactive({
             cuerpo_original <- input$url %>% read_html() %>% html_nodes('p') %>% html_text()
             # Ordenamos el cuerpo
-            cuerpo_recortado <- cuerpo_original[13:(length(cuerpo_original) - 1)]
+            cuerpo_recortado <- cuerpo_original[15:(length(cuerpo_original) - 1)]
             body <- cuerpo_recortado[1]
             for (i in 2:length(cuerpo_recortado)){
               gsub("  ", "", cuerpo_recortado[i])
